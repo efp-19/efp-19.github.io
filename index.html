@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eugenio F.P. — Applied AI / Systems</title>
+<meta name="description" content="Applied AI engineer and systems architect. Selected work in AI pipelines, agentic workflows, and ML infrastructure.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0E1116;
+    --surface: #141A21;
+    --surface-2: #1B232C;
+    --text: #EDEEF2;
+    --text-dim: #8B93A1;
+    --text-faint: #5C6470;
+    --accent: #D8A24A;
+    --accent-soft: rgba(216, 162, 74, 0.14);
+    --accent2: #4FB8AE;
+    --line: #232C36;
+    --line-soft: #1A2128;
+    --radius: 10px;
+    --max: 760px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+    font-weight: 600;
+    line-height: 1.15;
+    margin: 0;
+    color: var(--text);
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .mono {
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.03em;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* ---------- NAV ---------- */
+  header.site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(8px);
+    background: rgba(14, 17, 22, 0.82);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .nav-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    border: 1px solid var(--line);
+    padding: 7px 14px;
+    border-radius: 7px;
+    font-size: 13.5px;
+    color: var(--text) !important;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .nav-cta:hover { border-color: var(--accent); color: var(--accent) !important; }
+
+  @media (max-width: 560px) {
+    .nav-links .nav-links-text { display: none; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    padding: 84px 0 56px;
+  }
+  .hero h1 {
+    font-size: clamp(32px, 5.5vw, 46px);
+    margin-top: 14px;
+    max-width: 11.5ch;
+  }
+  .hero .sub {
+    margin-top: 18px;
+    max-width: 46ch;
+    color: var(--text-dim);
+    font-size: 17px;
+  }
+  .hero .accent-word { color: var(--accent); }
+
+  /* pipeline graphic */
+  .pipeline {
+    margin-top: 40px;
+    display: block;
+    width: 100%;
+    max-width: 480px;
+  }
+  .pipeline circle.node {
+    fill: var(--surface-2);
+    stroke: var(--line);
+    stroke-width: 1.5;
+  }
+  .pipeline circle.node-fill {
+    fill: var(--accent);
+    opacity: 0;
+    animation: nodeOn 2.8s ease-in-out infinite;
+  }
+  .pipeline .n2 { animation-delay: 0.5s; }
+  .pipeline .n3 { animation-delay: 1s; }
+  .pipeline path.flow {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 1.5;
+  }
+  .pipeline path.flow-draw {
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    stroke-dasharray: 6 8;
+    stroke-dashoffset: 0;
+    opacity: 0.55;
+    animation: flowMove 2.8s linear infinite;
+  }
+  .pipeline text {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    fill: var(--text-faint);
+  }
+
+  @keyframes nodeOn {
+    0%, 100% { opacity: 0; }
+    40%, 60% { opacity: 1; }
+  }
+  @keyframes flowMove {
+    to { stroke-dashoffset: -28; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pipeline circle.node-fill { animation: none; opacity: 0.85; }
+    .pipeline path.flow-draw { animation: none; opacity: 0.35; }
+  }
+
+  /* ---------- SECTION GENERIC ---------- */
+  section { padding: 56px 0; }
+  section.bordered { border-top: 1px solid var(--line-soft); }
+  .section-head { margin-bottom: 36px; }
+  .section-head h2 {
+    font-size: 22px;
+    margin-top: 8px;
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about p {
+    color: var(--text-dim);
+    max-width: 56ch;
+    font-size: 15.5px;
+  }
+  .about p + p { margin-top: 14px; }
+  .about strong { color: var(--text); font-weight: 500; }
+
+  /* ---------- WORK / CASE STUDIES ---------- */
+  .case {
+    position: relative;
+    padding-left: 28px;
+    border-left: 1px solid var(--line);
+    margin-bottom: 64px;
+  }
+  .case:last-child { margin-bottom: 0; }
+  .case::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 4px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--bg);
+  }
+  .case-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .case-head h3 { font-size: 19px; }
+  .case-role {
+    font-size: 12.5px;
+    color: var(--text-faint);
+  }
+  .case-block { margin-top: 20px; }
+  .case-block h4 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin: 0 0 8px;
+  }
+  .case-block p {
+    color: var(--text-dim);
+    font-size: 15px;
+    margin: 0;
+    max-width: 58ch;
+  }
+  .case-block ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .case-block li {
+    color: var(--text-dim);
+    font-size: 15px;
+    padding: 9px 0;
+    border-top: 1px solid var(--line-soft);
+  }
+  .case-block li:first-child { border-top: none; padding-top: 0; }
+  .case-block li strong {
+    color: var(--text);
+    font-weight: 500;
+    display: block;
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+  .case-block .placeholder {
+    color: var(--text-faint);
+    font-style: italic;
+  }
+  .stack-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+  }
+  .stack-tags span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--accent2);
+    background: rgba(79, 184, 174, 0.1);
+    border: 1px solid rgba(79, 184, 174, 0.25);
+    padding: 4px 9px;
+    border-radius: 5px;
+  }
+
+  /* ---------- SKILLS ---------- */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+  @media (max-width: 560px) {
+    .skills-grid { grid-template-columns: 1fr; }
+  }
+  .skill-group .eyebrow { display: block; margin-bottom: 10px; }
+  .skill-group .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+  .skill-group .tags span {
+    font-size: 13px;
+    color: var(--text-dim);
+    border: 1px solid var(--line);
+    padding: 5px 10px;
+    border-radius: 6px;
+  }
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  footer {
+    border-top: 1px solid var(--line-soft);
+    padding: 48px 0 64px;
+  }
+  footer h2 { font-size: 21px; margin-top: 8px; }
+  .contact-links {
+    margin-top: 22px;
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+    font-size: 15px;
+  }
+  .contact-links a {
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .contact-links a:hover { color: var(--accent); border-color: var(--accent); }
+  .footer-note {
+    margin-top: 40px;
+    font-size: 12.5px;
+    color: var(--text-faint);
+  }
+</style>
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <a href="#top" class="nav-name">eugenio<span style="color:var(--accent)">.</span>fp</a>
+    <nav class="nav-links">
+      <a href="#about" class="nav-links-text">About</a>
+      <a href="#work" class="nav-links-text">Work</a>
+      <a href="#contact" class="nav-links-text">Contact</a>
+      <!-- TODO: replace # with the actual path to your resume PDF once it's in the repo -->
+      <a href="resume.pdf" class="nav-cta">Resume</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero wrap">
+    <p class="eyebrow">Applied AI &middot; Systems Architecture</p>
+    <h1>I design and ship production AI systems.</h1>
+    <p class="sub">
+      RAG pipelines, agentic workflows, and ML infrastructure —
+      from architecture decisions down to <span class="accent-word">deployment</span>.
+      <!-- TODO: adjust this line if it doesn't match your focus -->
+    </p>
+
+    <svg class="pipeline" viewBox="0 0 480 90" aria-hidden="true">
+      <path class="flow" d="M40 45 H 200" />
+      <path class="flow-draw" d="M40 45 H 200" />
+      <path class="flow" d="M240 45 H 400" />
+      <path class="flow-draw" d="M240 45 H 400" />
+
+      <circle class="node" cx="40" cy="45" r="16"></circle>
+      <circle class="node-fill n1" cx="40" cy="45" r="16"></circle>
+      <text x="40" y="76" text-anchor="middle">DATA</text>
+
+      <circle class="node" cx="240" cy="45" r="16"></circle>
+      <circle class="node-fill n2" cx="240" cy="45" r="16"></circle>
+      <text x="240" y="76" text-anchor="middle">MODEL</text>
+
+      <circle class="node" cx="440" cy="45" r="16"></circle>
+      <circle class="node-fill n3" cx="440" cy="45" r="16"></circle>
+      <text x="440" y="76" text-anchor="middle">DECISION</text>
+    </svg>
+  </section>
+
+  <section id="about" class="wrap bordered about">
+    <div class="section-head">
+      <p class="eyebrow">01 — About</p>
+      <h2>Background</h2>
+    </div>
+    <p>
+      <!-- TODO: rewrite this bio in your own voice — this is a starting draft -->
+      I'm an applied AI engineer and systems architect with a background spanning
+      <strong>founding and building products end-to-end</strong> and leading AI-driven
+      engineering initiatives inside larger organizations. I'm most interested in the
+      layer between "the model works in a notebook" and "the system runs reliably in
+      production" — data pipelines, evaluation, human-in-the-loop design, and the
+      architectural tradeoffs that decide whether an AI feature actually holds up at scale.
+    </p>
+    <p>
+      I tend to work solo end-to-end on smaller systems and embed deeply with engineers
+      and domain experts on larger ones — either way, the work is the same: turn an
+      ambiguous problem into a system someone can trust.
+    </p>
+  </section>
+
+  <section id="work" class="wrap bordered">
+    <div class="section-head">
+      <p class="eyebrow">02 — Selected Work</p>
+      <h2>Case studies</h2>
+    </div>
+
+    <!-- CASE STUDY 1 -->
+    <div class="case">
+      <div class="case-head">
+        <h3>Oracy Scoring AI</h3>
+        <span class="case-role mono">Solo &middot; end-to-end</span>
+      </div>
+
+      <div class="case-block">
+        <h4>Context</h4>
+        <p>
+          Language programs needed a way to assess spoken English at scale.
+          Manual listening and scoring per student didn't scale across cohorts,
+          and recordings lived in Zoom Cloud with no structured pipeline to get
+          from "audio exists" to "a teacher can see a score."
+        </p>
+      </div>
+
+      <div class="case-block">
+        <h4>Approach</h4>
+        <p>
+          Designed an event-driven pipeline that polls for new recordings, normalizes
+          per-student audio, then runs a hybrid scoring model — pronunciation and fluency
+          from a speech-specific assessment service, vocabulary/grammar/topic relevance
+          from an LLM reading the transcript.
+        </p>
+        <ul style="margin-top:16px;">
+          <li><strong>Polling over webhooks</strong>Avoided requiring a public endpoint, simplifying deployment, while leaving room to add webhooks later without touching the core pipeline.</li>
+          <li><strong>Human-in-the-loop name resolution</strong>Fuzzy matching with a confidence threshold, falling back to manual review for anything ambiguous. Scoring waits until every recording in a session is resolved.</li>
+          <li><strong>Two isolated worker queues</strong>One for I/O-bound work, one dedicated to the speech-scoring API, sized to respect that provider's rate limits.</li>
+          <li><strong>Composite scoring logic</strong>A weighted formula that penalizes weak components more than it rewards strong ones, so one weak skill can't be masked by a strong one.</li>
+        </ul>
+      </div>
+
+      <div class="case-block">
+        <h4>Outcome</h4>
+        <p>
+          Across a year of class recordings, the pipeline identified each student's key
+          improvement areas and surfaced their single most prominent pronunciation error —
+          giving teachers a clear, individualized focus point instead of an unstructured
+          transcript to review by hand.
+        </p>
+      </div>
+
+      <div class="stack-tags">
+        <span>FastAPI</span><span>Celery</span><span>Redis</span>
+        <span>PostgreSQL</span><span>Azure Speech</span><span>Azure OpenAI</span>
+        <span>Azure Container Apps</span>
+      </div>
+    </div>
+
+    <!-- CASE STUDY 2 -->
+    <div class="case">
+      <div class="case-head">
+        <h3>AI-Assisted Incident Response for Data Pipelines</h3>
+        <span class="case-role mono">Lead Solution Engineer</span>
+      </div>
+
+      <div class="case-block">
+        <h4>Context</h4>
+        <p>
+          At a company running enterprise data-ingestion pipelines for multiple
+          customers, failures were detected automatically, but everything after
+          detection — investigation, context-gathering, ownership, tracking — stayed
+          manual. That gap was the real bottleneck, not detection itself.
+        </p>
+      </div>
+
+      <div class="case-block">
+        <h4>Approach</h4>
+        <p>
+          Designed a workflow where an agent, given access to a defined set of internal
+          tools — logs, customer metadata, prior-incident history — investigates each
+          failure and attempts a fix on its own.
+        </p>
+        <ul style="margin-top:16px;">
+          <li><strong>Confidence-based branching</strong>If the agent is confident in its fix, it opens a pull request directly. If not, it produces a structured handover document instead, so an engineer isn't starting from zero.</li>
+          <li><strong>Human review as the gate</strong>Either path ends with human review before anything ships — the agent proposes, it doesn't deploy.</li>
+          <li><strong>Feedback loop</strong>Outcomes from review (PR accepted as-is, fix was wrong, handover was useful or wasn't) feed a metrics loop used to keep improving the agent over time.</li>
+        </ul>
+      </div>
+
+      <div class="case-block">
+        <h4>Outcome</h4>
+        <p class="placeholder">
+          Placeholder — still early days. Once there's data: % of failures resolved
+          via agent PR vs. handover, time-to-PR or time-to-handover, and how often
+          human review overturns the agent's fix.
+        </p>
+      </div>
+
+      <div class="stack-tags">
+        <span>AWS</span><span>AWS Bedrock</span><span>Claude</span>
+        <span>Python</span><span>GitHub Actions</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" class="wrap bordered">
+    <div class="section-head">
+      <p class="eyebrow">03 — Skills</p>
+      <h2>Stack</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <span class="eyebrow">AI / ML</span>
+        <div class="tags">
+          <span>LLM application design</span><span>Agentic workflows</span>
+          <span>RAG</span><span>Evaluation &amp; scoring</span><span>Claude / AWS Bedrock</span><span>Azure OpenAI</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <span class="eyebrow">Backend / Infra</span>
+        <div class="tags">
+          <span>Python</span><span>FastAPI</span><span>Celery / Redis</span>
+          <span>PostgreSQL</span><span>Docker</span><span>CI/CD</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <span class="eyebrow">Cloud</span>
+        <div class="tags">
+          <span>AWS</span><span>Azure</span><span>Container Apps</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <span class="eyebrow">Practice</span>
+        <div class="tags">
+          <span>System architecture</span><span>0-to-1 product builds</span>
+          <span>Cross-functional delivery</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="contact" class="wrap">
+  <p class="eyebrow">04 — Contact</p>
+  <h2>Let's talk.</h2>
+  <div class="contact-links">
+    <!-- TODO: replace each placeholder with your real links -->
+    <a href="mailto:your.email@example.com">your.email@example.com</a>
+    <a href="https://linkedin.com/in/your-handle" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://github.com/eugeniofp" target="_blank" rel="noopener">GitHub</a>
+  </div>
+  <p class="footer-note">eugeniofp.github.io</p>
+</footer>
+
+</body>
+</html>
