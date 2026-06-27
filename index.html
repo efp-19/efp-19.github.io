@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eugenio F.P. — Applied AI / Systems</title>
-<meta name="description" content="Applied AI engineer and systems architect. Selected work in AI pipelines, agentic workflows, and ML infrastructure.">
+<title>Eugenio Fenoaltea Pièche — Applied AI &amp; Solution Engineering</title>
+<meta name="description" content="Applied AI and Solution Engineering leader. Selected work in AI pipelines, agentic workflows, and ML infrastructure.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -128,6 +128,11 @@
     margin-top: 14px;
     max-width: 11.5ch;
   }
+  .role-line {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-top: 4px;
+  }
   .hero .sub {
     margin-top: 18px;
     max-width: 46ch;
@@ -203,6 +208,55 @@
   }
   .about p + p { margin-top: 14px; }
   .about strong { color: var(--text); font-weight: 500; }
+
+  /* ---------- EXPERIENCE ---------- */
+  .exp-item {
+    position: relative;
+    padding-left: 28px;
+    border-left: 1px solid var(--line);
+    margin-bottom: 32px;
+  }
+  .exp-item:last-child { margin-bottom: 0; }
+  .exp-item::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 4px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent2);
+    box-shadow: 0 0 0 3px var(--bg);
+  }
+  .exp-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .exp-head h3 { font-size: 16px; }
+  .exp-dates {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--text-faint);
+  }
+  .exp-title {
+    font-size: 13px;
+    color: var(--text-faint);
+    margin: 0 0 8px;
+  }
+  .exp-item p.exp-desc {
+    color: var(--text-dim);
+    font-size: 14.5px;
+    margin: 0;
+    max-width: 58ch;
+  }
+  .exp-link {
+    color: var(--accent2);
+    border-bottom: 1px solid rgba(79, 184, 174, 0.4);
+  }
 
   /* ---------- WORK / CASE STUDIES ---------- */
   .case {
@@ -358,12 +412,13 @@
 <main id="top">
 
   <section class="hero wrap">
-    <p class="eyebrow">Applied AI &middot; Systems Architecture</p>
+    <p class="eyebrow">Eugenio Fenoaltea Pièche</p>
+    <p class="role-line">Applied AI &amp; Solution Engineering Leader</p>
     <h1>I design and ship production AI systems.</h1>
     <p class="sub">
-      RAG pipelines, agentic workflows, and ML infrastructure —
-      from architecture decisions down to <span class="accent-word">deployment</span>.
-      <!-- TODO: adjust this line if it doesn't match your focus -->
+      5+ years deploying enterprise AI and data platforms across supply chain,
+      transportation, pharma, and education. Currently leading Solution
+      Engineering at OpenSC and building <span class="accent-word">Agora</span>.
     </p>
 
     <svg class="pipeline" viewBox="0 0 480 90" aria-hidden="true">
@@ -392,24 +447,82 @@
       <h2>Background</h2>
     </div>
     <p>
-      <!-- TODO: rewrite this bio in your own voice — this is a starting draft -->
-      I'm an applied AI engineer and systems architect with a background spanning
-      <strong>founding and building products end-to-end</strong> and leading AI-driven
-      engineering initiatives inside larger organizations. I'm most interested in the
-      layer between "the model works in a notebook" and "the system runs reliably in
-      production" — data pipelines, evaluation, human-in-the-loop design, and the
-      architectural tradeoffs that decide whether an AI feature actually holds up at scale.
+      I'm an applied AI and solution engineering leader with 5+ years designing and
+      deploying enterprise technology across supply chain, transportation, pharmaceuticals,
+      and education. I currently lead Solution Engineering at <strong>OpenSC</strong>, and
+      co-founded <strong>Agora</strong>, where I designed and built an AI-powered assessment
+      platform using LLMs, speech processing, and cloud-native workflows.
     </p>
     <p>
-      I tend to work solo end-to-end on smaller systems and embed deeply with engineers
-      and domain experts on larger ones — either way, the work is the same: turn an
-      ambiguous problem into a system someone can trust.
+      I'm most interested in the layer between "the model works in a notebook" and
+      "the system runs reliably in production" — data pipelines, evaluation,
+      human-in-the-loop design, and the architectural tradeoffs that decide whether
+      an AI feature actually holds up at scale.
     </p>
+  </section>
+
+  <section id="experience" class="wrap bordered">
+    <div class="section-head">
+      <p class="eyebrow">02 — Experience</p>
+      <h2>Where I've worked</h2>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-head">
+        <h3>OpenSC</h3>
+        <span class="exp-dates">Jan 2025 — Present</span>
+      </div>
+      <p class="exp-title">Lead Solution Engineer (previously Senior Solution Engineer)</p>
+      <p class="exp-desc">
+        Lead the Solution Engineering function — delivery standards, technical strategy,
+        and executive-level commercial partnership. Designed AI-enabled operational
+        workflows that improved engineering efficiency by 30%+, and data platform
+        standards that cut customer onboarding effort by 75%.
+      </p>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-head">
+        <h3>Agora</h3>
+        <span class="exp-dates">Sep 2024 — Present</span>
+      </div>
+      <p class="exp-title">Co-Founder &amp; Technical Lead</p>
+      <p class="exp-desc">
+        Co-founded and built an AI-powered spoken-language assessment platform
+        end-to-end — see the <a href="#work" class="exp-link">Oracy Scoring AI</a>
+        case study below.
+      </p>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-head">
+        <h3>Optibus</h3>
+        <span class="exp-dates">Apr 2022 — Jan 2025</span>
+      </div>
+      <p class="exp-title">Senior Solution Engineer &amp; Optimisation Specialist</p>
+      <p class="exp-desc">
+        Led technical discovery, solution architecture, and deployments across EMEA
+        and LATAM, influencing €500k+ ARR. Redesigned onboarding workflows, cutting
+        time-to-value by 60%.
+      </p>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-head">
+        <h3>PQE Group</h3>
+        <span class="exp-dates">Jan 2020 — Apr 2022</span>
+      </div>
+      <p class="exp-title">Senior Consultant &amp; Project Lead</p>
+      <p class="exp-desc">
+        Led €300k+ technology and compliance projects for global pharmaceutical
+        organisations under strict regulatory constraints.
+      </p>
+    </div>
   </section>
 
   <section id="work" class="wrap bordered">
     <div class="section-head">
-      <p class="eyebrow">02 — Selected Work</p>
+      <p class="eyebrow">03 — Selected Work</p>
       <h2>Case studies</h2>
     </div>
 
@@ -467,7 +580,7 @@
     <div class="case">
       <div class="case-head">
         <h3>AI-Assisted Incident Response for Data Pipelines</h3>
-        <span class="case-role mono">Lead Solution Engineer</span>
+        <span class="case-role mono">Co-Lead</span>
       </div>
 
       <div class="case-block">
@@ -512,49 +625,65 @@
 
   <section id="skills" class="wrap bordered">
     <div class="section-head">
-      <p class="eyebrow">03 — Skills</p>
+      <p class="eyebrow">04 — Skills</p>
       <h2>Stack</h2>
     </div>
     <div class="skills-grid">
       <div class="skill-group">
-        <span class="eyebrow">AI / ML</span>
+        <span class="eyebrow">AI</span>
         <div class="tags">
-          <span>LLM application design</span><span>Agentic workflows</span>
-          <span>RAG</span><span>Evaluation &amp; scoring</span><span>Claude / AWS Bedrock</span><span>Azure OpenAI</span>
+          <span>Claude</span><span>OpenAI</span><span>Azure OpenAI</span>
+          <span>AWS Bedrock</span><span>Prompt Engineering</span><span>AI Workflow Design</span>
         </div>
       </div>
       <div class="skill-group">
-        <span class="eyebrow">Backend / Infra</span>
+        <span class="eyebrow">Programming</span>
         <div class="tags">
-          <span>Python</span><span>FastAPI</span><span>Celery / Redis</span>
-          <span>PostgreSQL</span><span>Docker</span><span>CI/CD</span>
+          <span>Python</span><span>SQL</span><span>FastAPI</span>
+          <span>APIs</span><span>Git</span><span>Docker</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <span class="eyebrow">Data</span>
+        <div class="tags">
+          <span>PostgreSQL</span><span>dbt</span><span>ETL</span>
+          <span>Data Pipelines</span><span>Dagster</span>
         </div>
       </div>
       <div class="skill-group">
         <span class="eyebrow">Cloud</span>
         <div class="tags">
-          <span>AWS</span><span>Azure</span><span>Container Apps</span>
-        </div>
-      </div>
-      <div class="skill-group">
-        <span class="eyebrow">Practice</span>
-        <div class="tags">
-          <span>System architecture</span><span>0-to-1 product builds</span>
-          <span>Cross-functional delivery</span>
+          <span>AWS</span><span>Azure</span><span>GitHub Actions</span>
+          <span>Redis</span><span>Celery</span>
         </div>
       </div>
     </div>
   </section>
 
+  <section id="education" class="wrap bordered">
+    <div class="section-head">
+      <p class="eyebrow">05 — Education</p>
+      <h2>Education</h2>
+    </div>
+    <p style="color:var(--text-dim); font-size:15px; max-width:58ch;">
+      <strong style="color:var(--text); font-weight:500;">University of Cambridge</strong>,
+      Homerton College — MEng, MA &amp; BEng Chemical Engineering (First Class)
+    </p>
+    <p style="color:var(--text-faint); font-size:13.5px; margin-top:10px; max-width:58ch;">
+      Co-author, "Continuous synthesis of ruthenium nanoparticles with tuneable sizes,"
+      Reaction Chemistry &amp; Engineering.
+    </p>
+  </section>
+
 </main>
 
 <footer id="contact" class="wrap">
-  <p class="eyebrow">04 — Contact</p>
+  <p class="eyebrow">06 — Contact</p>
   <h2>Let's talk.</h2>
   <div class="contact-links">
-    <!-- TODO: replace each placeholder with your real links -->
-    <a href="mailto:your.email@example.com">your.email@example.com</a>
-    <a href="https://linkedin.com/in/your-handle" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="mailto:ef365@cantab.ac.uk">ef365@cantab.ac.uk</a>
+    <!-- TODO: swap in your real LinkedIn URL -->
+    <a href="#" target="_blank" rel="noopener">LinkedIn</a>
     <a href="https://github.com/eugeniofp" target="_blank" rel="noopener">GitHub</a>
   </div>
   <p class="footer-note">eugeniofp.github.io</p>
