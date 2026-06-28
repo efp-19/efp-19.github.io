@@ -258,6 +258,26 @@
     border-bottom: 1px solid rgba(79, 184, 174, 0.4);
   }
 
+  .exp-achievements {
+    list-style: none;
+    margin: 10px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+  .exp-achievements li {
+    font-size: 14.5px;
+    color: var(--text-dim);
+    padding-left: 15px;
+    position: relative;
+  }
+  .exp-achievements li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--accent2);
+  }
+
   /* ---------- WORK / CASE STUDIES ---------- */
   .case {
     position: relative;
@@ -344,6 +364,50 @@
     border-radius: 5px;
   }
 
+  /* ---------- FLOW DIAGRAM (OpenSC case study) ---------- */
+  .flow-diagram {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    margin: 24px auto 4px;
+  }
+  .flow-diagram rect {
+    fill: var(--surface-2);
+    stroke: var(--line);
+    stroke-width: 1.3;
+  }
+  .flow-diagram rect.fd-amber { stroke: var(--accent); }
+  .flow-diagram rect.fd-teal { stroke: var(--accent2); }
+  .flow-diagram text {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    fill: var(--text-dim);
+    text-anchor: middle;
+  }
+  .flow-diagram text.fd-label {
+    font-size: 9px;
+    fill: var(--text-faint);
+  }
+  .flow-diagram path.fd-line {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 1.3;
+  }
+  .flow-diagram path.fd-loop {
+    fill: none;
+    stroke: var(--text-faint);
+    stroke-width: 1.1;
+    stroke-dasharray: 4 5;
+  }
+  .flow-diagram .fd-arrowhead { fill: var(--text-faint); }
+  .flow-caption {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-faint);
+    font-style: italic;
+    margin: 6px 0 0;
+  }
+
   /* ---------- SKILLS ---------- */
   .skills-grid {
     display: grid;
@@ -414,7 +478,7 @@
   <section class="hero wrap">
     <p class="eyebrow">Eugenio Fenoaltea Pièche</p>
     <p class="role-line">Applied AI &amp; Solution Engineering Leader</p>
-    <h1>I design and ship production AI systems.</h1>
+    <h1>I design AI systems that solve real operational problems.</h1>
     <p class="sub">
       5+ years deploying enterprise AI and data platforms across supply chain,
       transportation, pharma, and education. Currently leading Solution
@@ -466,6 +530,11 @@
       <p class="eyebrow">02 — Experience</p>
       <h2>Where I've worked</h2>
     </div>
+    <p style="color:var(--text-dim); font-size:14.5px; max-width:58ch; margin:-20px 0 28px;">
+      Most of these roles sit at the intersection of enterprise customers and technical
+      delivery — running discovery with stakeholders from engineers to C-level
+      executives, then owning the solution through deployment and beyond.
+    </p>
 
     <div class="exp-item">
       <div class="exp-head">
@@ -474,12 +543,15 @@
       </div>
       <p class="exp-title">Lead Solution Engineer (previously Senior Solution Engineer)</p>
       <p class="exp-desc">
-        Own the technical customer lifecycle for enterprise accounts — from pre-sales
-        and pilots through deployment and expansion — and lead a team of 6+ solution
-        engineers. Closed $300K+ in NRR across APAC, defined global data-ingestion
-        standards that cut onboarding effort by 75%, and built AI-enabled workflows
-        that improved engineering efficiency by 30%+.
+        Lead Solution Engineering across enterprise deployments — owning the technical
+        customer lifecycle from pre-sales through expansion, and leading a team of
+        6+ solution engineers.
       </p>
+      <ul class="exp-achievements">
+        <li>$300K+ in NRR closed across APAC</li>
+        <li>75% reduction in onboarding effort via new data-ingestion standards</li>
+        <li>30%+ engineering efficiency gain from AI-enabled workflows</li>
+      </ul>
     </div>
 
     <div class="exp-item">
@@ -547,6 +619,17 @@
       </div>
 
       <div class="case-block">
+        <h4>Constraints</h4>
+        <p>
+          Built and run solo, so constraints were as much about minimizing ongoing
+          operational burden as solving the assessment problem itself: a rate-limited
+          speech API, recordings long enough (60+ minutes) to overflow that API's
+          buffer, and no appetite for exposing a public endpoint just to receive
+          webhooks.
+        </p>
+      </div>
+
+      <div class="case-block">
         <h4>Approach</h4>
         <p>
           Designed an event-driven pipeline that polls for new recordings, normalizes
@@ -583,7 +666,7 @@
     <div class="case">
       <div class="case-head">
         <h3>AI-Assisted Incident Response for Data Pipelines</h3>
-        <span class="case-role mono">Lead</span>
+        <span class="case-role mono">Lead Solution Engineer</span>
       </div>
 
       <div class="case-block">
@@ -597,16 +680,78 @@
       </div>
 
       <div class="case-block">
+        <h4>Constraints</h4>
+        <p>
+          The agent needed real operational context — logs, customer metadata, prior
+          incidents — to investigate well, but that context sits next to sensitive
+          customer data across many accounts. Tool access had to be tightly scoped,
+          and impossible to accidentally widen as new failure types got added later.
+        </p>
+      </div>
+
+      <div class="case-block">
         <h4>Approach</h4>
         <p>
-          Designed a workflow where an agent, given access to a defined set of internal
-          tools — logs, customer metadata, prior-incident history — investigates each
-          failure and attempts a fix on its own.
+          Designed a workflow where an agent — given structured access to pipeline
+          logs, customer metadata, and prior-incident history — investigates each
+          failure, proposes a remediation, and opens a pull request once its
+          confidence in that fix clears a set threshold. Each failure type is handled
+          by its own written playbook, automatically routed by issue label, with the
+          data it can read declared per flow.
         </p>
+
+        <svg class="flow-diagram" viewBox="0 0 480 580" aria-hidden="true">
+          <defs>
+            <marker id="fd-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" class="fd-arrowhead"></path>
+            </marker>
+          </defs>
+
+          <path class="fd-line" d="M240,50 L240,90" marker-end="url(#fd-arrow)" />
+          <path class="fd-line" d="M240,134 L240,170" marker-end="url(#fd-arrow)" />
+          <path class="fd-line" d="M210,214 L118,270" marker-end="url(#fd-arrow)" />
+          <path class="fd-line" d="M270,214 L362,270" marker-end="url(#fd-arrow)" />
+          <path class="fd-line" d="M118,320 L205,360" marker-end="url(#fd-arrow)" />
+          <path class="fd-line" d="M362,320 L275,360" marker-end="url(#fd-arrow)" />
+          <path class="fd-line" d="M240,404 L240,440" marker-end="url(#fd-arrow)" />
+          <path class="fd-line" d="M240,484 L240,520" marker-end="url(#fd-arrow)" />
+          <path class="fd-loop" d="M390,542 C460,542 460,192 352,192" marker-end="url(#fd-arrow)" />
+
+          <text class="fd-label" x="160" y="248">high confidence</text>
+          <text class="fd-label" x="320" y="248">low confidence</text>
+          <text class="fd-label" x="468" y="370" style="text-anchor:end;">improves over time</text>
+
+          <rect x="130" y="10" width="220" height="40" rx="8"></rect>
+          <text x="240" y="34">Pipeline failure detected</text>
+
+          <rect x="130" y="90" width="220" height="44" rx="8"></rect>
+          <text x="240" y="116">Collect logs &amp; context</text>
+
+          <rect class="fd-amber" x="130" y="170" width="220" height="44" rx="8"></rect>
+          <text x="240" y="196">Agent investigates</text>
+
+          <rect class="fd-amber" x="20" y="270" width="195" height="50" rx="8"></rect>
+          <text x="117" y="299">Opens a pull request</text>
+
+          <rect class="fd-amber" x="265" y="270" width="195" height="50" rx="8"></rect>
+          <text x="362" y="299">Writes handover report</text>
+
+          <rect class="fd-teal" x="130" y="360" width="220" height="44" rx="8"></rect>
+          <text x="240" y="386">Human review</text>
+
+          <rect class="fd-teal" x="130" y="440" width="220" height="44" rx="8"></rect>
+          <text x="240" y="466">Merge / reject / modify</text>
+
+          <rect x="130" y="520" width="220" height="44" rx="8"></rect>
+          <text x="240" y="546">Metrics &amp; feedback</text>
+        </svg>
+        <p class="flow-caption">Simplified — amber: agent-driven, teal: human-reviewed</p>
         <ul style="margin-top:16px;">
-          <li><strong>Confidence-based branching</strong>If the agent is confident in its fix, it opens a pull request directly. If not, it produces a structured handover document instead, so an engineer isn't starting from zero.</li>
-          <li><strong>Human review as the gate</strong>Either path ends with human review before anything ships — the agent proposes, it doesn't deploy.</li>
-          <li><strong>Feedback loop</strong>Outcomes from review (PR accepted as-is, fix was wrong, handover was useful or wasn't) feed a metrics loop used to keep improving the agent over time.</li>
+          <li><strong>Confidence-based branching</strong>Rather than treating every failure the same, the workflow uses a confidence threshold to decide the level of autonomy: high-confidence fixes become pull requests, lower-confidence investigations become structured handover reports — because an incorrect autonomous fix is more expensive than a slower, well-informed human one.</li>
+          <li><strong>Human review as the gate</strong>Every path ends with human review before anything ships. The agent proposes, it doesn't deploy — that boundary is what keeps engineering accountability intact as autonomy increases.</li>
+          <li><strong>PRs, not direct deployment</strong>Routing fixes through a pull request — rather than auto-deploying — keeps the agent inside the same review, CI, and rollback safeguards every other code change goes through.</li>
+          <li><strong>Feedback loop</strong>Outcomes from review — accepted as-is, corrected, or rejected — feed a metrics loop used to keep improving the agent over time, so even a wrong investigation still adds value to the next one.</li>
+          <li><strong>Scoped data, centrally-locked permissions</strong>What data a flow can read is configurable per failure type, but what actions the agent is allowed to take is locked at the automation level, separate from that config — so adding a new failure type can change what the agent sees, but never what it's allowed to do.</li>
         </ul>
       </div>
 
@@ -682,11 +827,22 @@
       </p>
     </div>
   </section>
+  <section id="exploring" class="wrap bordered">
+    <div class="section-head">
+      <p class="eyebrow">06 — Currently Exploring</p>
+      <h2>What I'm learning</h2>
+    </div>
+    <!-- TODO: this list is a placeholder — edit to match what you're actually digging into -->
+    <div class="stack-tags">
+      <span>MCP</span><span>AI evaluations</span><span>Agent architectures</span>
+      <span>Long-context workflows</span><span>Enterprise deployment patterns</span>
+    </div>
+  </section>
 
 </main>
 
 <footer id="contact" class="wrap">
-  <p class="eyebrow">06 — Contact</p>
+  <p class="eyebrow">07 — Contact</p>
   <h2>Let's talk.</h2>
   <div class="contact-links">
     <a href="mailto:ef365@cantab.ac.uk">ef365@cantab.ac.uk</a>
