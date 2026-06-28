@@ -11,17 +11,15 @@
 <style>
   :root {
     --bg: #0E1116;
-    --surface: #141A21;
     --surface-2: #1B232C;
     --text: #EDEEF2;
     --text-dim: #8B93A1;
-    --text-faint: #5C6470;
+    --text-faint: #717A87;
     --accent: #D8A24A;
     --accent-soft: rgba(216, 162, 74, 0.14);
     --accent2: #4FB8AE;
     --line: #232C36;
     --line-soft: #1A2128;
-    --radius: 10px;
     --max: 760px;
   }
 
@@ -80,6 +78,7 @@
     position: sticky;
     top: 0;
     z-index: 10;
+    -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     background: rgba(14, 17, 22, 0.82);
     border-bottom: 1px solid var(--line-soft);
@@ -105,18 +104,48 @@
     color: var(--text-dim);
   }
   .nav-links a:hover { color: var(--text); }
-  .nav-cta {
-    border: 1px solid var(--line);
-    padding: 7px 14px;
-    border-radius: 7px;
-    font-size: 13.5px;
-    color: var(--text) !important;
-    transition: border-color .15s ease, color .15s ease;
+
+  /* mobile nav toggle */
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    padding: 6px;
+    cursor: pointer;
   }
-  .nav-cta:hover { border-color: var(--accent); color: var(--accent) !important; }
+  .nav-toggle svg { display: block; }
 
   @media (max-width: 560px) {
-    .nav-links .nav-links-text { display: none; }
+    .nav-links {
+      position: absolute;
+      top: 100%;
+      right: 24px;
+      left: 24px;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 6px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.35);
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height .2s ease, opacity .15s ease;
+      pointer-events: none;
+    }
+    .nav-links.is-open {
+      max-height: 220px;
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .nav-links a {
+      padding: 12px 10px;
+      border-radius: 6px;
+    }
+    .nav-links a:hover { background: rgba(255,255,255,0.04); }
+    .nav-toggle { display: block; }
   }
 
   /* ---------- HERO ---------- */
@@ -126,7 +155,7 @@
   .hero h1 {
     font-size: clamp(32px, 5.5vw, 46px);
     margin-top: 14px;
-    max-width: 11.5ch;
+    max-width: none;
   }
   .role-line {
     color: var(--text-dim);
@@ -135,7 +164,7 @@
   }
   .hero .sub {
     margin-top: 18px;
-    max-width: 46ch;
+    max-width: none;
     color: var(--text-dim);
     font-size: 17px;
   }
@@ -203,7 +232,7 @@
   /* ---------- ABOUT ---------- */
   .about p {
     color: var(--text-dim);
-    max-width: 56ch;
+    max-width: none;
     font-size: 15.5px;
   }
   .about p + p { margin-top: 14px; }
@@ -251,7 +280,7 @@
     color: var(--text-dim);
     font-size: 14.5px;
     margin: 0;
-    max-width: 58ch;
+    max-width: none;
   }
   .exp-link {
     color: var(--accent2);
@@ -281,8 +310,10 @@
   /* ---------- WORK / CASE STUDIES ---------- */
   .case {
     position: relative;
-    padding-left: 28px;
+    padding: 28px 28px 28px 32px;
     border-left: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(216,162,74,0.05), rgba(216,162,74,0) 220px);
+    border-radius: 0 10px 10px 0;
     margin-bottom: 64px;
   }
   .case:last-child { margin-bottom: 0; }
@@ -290,7 +321,7 @@
     content: '';
     position: absolute;
     left: -5px;
-    top: 4px;
+    top: 32px;
     width: 9px;
     height: 9px;
     border-radius: 50%;
@@ -323,7 +354,7 @@
     color: var(--text-dim);
     font-size: 15px;
     margin: 0;
-    max-width: 58ch;
+    max-width: none;
   }
   .case-block ul {
     margin: 0;
@@ -463,15 +494,36 @@
 <header class="site-nav">
   <div class="nav-inner">
     <a href="#top" class="nav-name">eugenio<span style="color:var(--accent)">.</span>fp</a>
-    <nav class="nav-links">
+    <nav class="nav-links" id="navLinks">
       <a href="#about" class="nav-links-text">About</a>
       <a href="#work" class="nav-links-text">Work</a>
       <a href="#contact" class="nav-links-text">Contact</a>
-      <!-- TODO: replace # with the actual path to your resume PDF once it's in the repo -->
-      <a href="resume.pdf" class="nav-cta">Resume</a>
     </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 5h14M3 10h14M3 15h14" stroke="#EDEEF2" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </button>
   </div>
 </header>
+
+<script>
+  (function () {
+    var toggle = document.getElementById('navToggle');
+    var links = document.getElementById('navLinks');
+    if (!toggle || !links) return;
+    toggle.addEventListener('click', function () {
+      var open = links.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    links.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') {
+        links.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
+</script>
 
 <main id="top">
 
@@ -530,7 +582,7 @@
       <p class="eyebrow">02 — Experience</p>
       <h2>Where I've worked</h2>
     </div>
-    <p style="color:var(--text-dim); font-size:14.5px; max-width:58ch; margin:-20px 0 28px;">
+    <p style="color:var(--text-dim); font-size:14.5px; margin:-20px 0 28px;">
       Most of these roles sit at the intersection of enterprise customers and technical
       delivery — running discovery with stakeholders from engineers to C-level
       executives, then owning the solution through deployment and beyond.
