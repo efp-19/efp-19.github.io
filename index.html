@@ -629,8 +629,10 @@
           Built and run solo, so constraints were as much about minimizing ongoing
           operational burden as solving the assessment problem itself: a rate-limited
           speech API, recordings long enough (60+ minutes) to overflow that API's
-          buffer, and no appetite for exposing a public endpoint just to receive
-          webhooks.
+          buffer, no appetite for exposing a public endpoint just to receive webhooks,
+          and Zoom's personal meeting rooms reusing the same meeting ID across every
+          session — which meant lessons had to be keyed on something more specific,
+          or unrelated classes would silently merge.
         </p>
       </div>
 
@@ -639,14 +641,62 @@
         <p>
           Designed an event-driven pipeline that polls for new recordings, normalizes
           per-student audio, then runs a hybrid scoring model — pronunciation and fluency
-          from a speech-specific assessment service, vocabulary/grammar/topic relevance
-          from an LLM reading the transcript.
+          from a speech-specific assessment service, and vocabulary/grammar/topic
+          relevance from an LLM reading the transcript (a deliberate substitution
+          after the speech vendor retired its own content-scoring feature mid-build).
         </p>
+
+        <svg class="flow-diagram" viewBox="0 0 480 580" aria-hidden="true">
+          <defs>
+            <marker id="fd-arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" class="fd-arrowhead"></path>
+            </marker>
+          </defs>
+
+          <path class="fd-line" d="M240,50 L240,90" marker-end="url(#fd-arrow2)" />
+          <path class="fd-line" d="M240,134 L240,170" marker-end="url(#fd-arrow2)" />
+          <path class="fd-line" d="M210,214 L118,270" marker-end="url(#fd-arrow2)" />
+          <path class="fd-line" d="M270,214 L362,270" marker-end="url(#fd-arrow2)" />
+          <path class="fd-line" d="M118,320 L205,360" marker-end="url(#fd-arrow2)" />
+          <path class="fd-line" d="M362,320 L275,360" marker-end="url(#fd-arrow2)" />
+          <path class="fd-line" d="M240,404 L240,440" marker-end="url(#fd-arrow2)" />
+          <path class="fd-line" d="M240,484 L240,520" marker-end="url(#fd-arrow2)" />
+
+          <text class="fd-label" x="158" y="248">high confidence</text>
+          <text class="fd-label" x="322" y="248">ambiguous</text>
+
+          <rect x="130" y="10" width="220" height="40" rx="8"></rect>
+          <text x="240" y="34">Zoom recording uploaded</text>
+
+          <rect class="fd-amber" x="130" y="90" width="220" height="44" rx="8"></rect>
+          <text x="240" y="116">Poll &amp; download</text>
+
+          <rect class="fd-amber" x="130" y="170" width="220" height="44" rx="8"></rect>
+          <text x="240" y="196">Match name to student</text>
+
+          <rect class="fd-amber" x="20" y="270" width="195" height="50" rx="8"></rect>
+          <text x="117" y="299">Auto-matched</text>
+
+          <rect class="fd-teal" x="265" y="270" width="195" height="50" rx="8"></rect>
+          <text x="362" y="299">Manual queue</text>
+
+          <rect class="fd-amber" x="130" y="360" width="220" height="44" rx="8"></rect>
+          <text x="240" y="386">Merge &amp; strip silence</text>
+
+          <rect class="fd-amber" x="130" y="440" width="220" height="44" rx="8"></rect>
+          <text x="240" y="466">Score: speech + LLM</text>
+
+          <rect class="fd-teal" x="130" y="520" width="220" height="44" rx="8"></rect>
+          <text x="240" y="546">Teacher dashboard</text>
+        </svg>
+        <p class="flow-caption">Simplified — amber: automated, teal: human-reviewed</p>
         <ul style="margin-top:16px;">
           <li><strong>Polling over webhooks</strong>Avoided requiring a public endpoint, simplifying deployment, while leaving room to add webhooks later without touching the core pipeline.</li>
-          <li><strong>Human-in-the-loop name resolution</strong>Fuzzy matching with a confidence threshold, falling back to manual review for anything ambiguous. Scoring waits until every recording in a session is resolved.</li>
+          <li><strong>Human-in-the-loop name resolution</strong>Fuzzy matching with an 85% confidence threshold, falling back to manual review for anything ambiguous. Scoring waits until every recording in a session is resolved.</li>
+          <li><strong>Per-student recording merge</strong>Breakout rooms and reconnects can split one student's audio across multiple files; recordings are merged per student, with silence stripped first so long sessions don't overflow the speech API's buffer.</li>
           <li><strong>Two isolated worker queues</strong>One for I/O-bound work, one dedicated to the speech-scoring API, sized to respect that provider's rate limits.</li>
           <li><strong>Composite scoring logic</strong>A weighted formula that penalizes weak components more than it rewards strong ones, so one weak skill can't be masked by a strong one.</li>
+          <li><strong>Jinja2 + HTMX over React</strong>The teacher-facing dashboard is read-heavy with simple interactions — a build step and client framework would have added complexity without adding value, so it stayed server-rendered.</li>
         </ul>
       </div>
 
